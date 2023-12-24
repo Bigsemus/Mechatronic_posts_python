@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Mechatronic Systems</title>
+     <script>
+        function openModal() {
+            document.getElementById('deleteModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+        const deleteLinks = document.querySelectorAll('.delete-post');
+
+        deleteLinks.forEach(link => {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                const articleId = this.getAttribute('data-article-id');
+                openModal();
+
+                const confirmDeleteButton = document.getElementById('confirmDelete');
+                confirmDeleteButton.addEventListener('click', function () {
+                    fetch(`/delete_post/${articleId}`, {
+                        method: 'DELETE'
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            // Optionally, you can redirect to another page after successful deletion
+                            window.location.href = '/';
+                        } else {
+                            console.error('Failed to delete the post.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                });
+            });
+        });
+    });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Mechatronic Systems</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section class="content">
+        {% block content %}{% endblock %}
+    </section>
+    <footer>
+        <p>&copy; 2023 Mechatronic Systems</p>
+    </footer>
+</body>
+</html>

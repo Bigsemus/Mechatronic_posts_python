@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div id="deleteModal" class="modal" style="display: block;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p>Are you sure you want to delete "{{ article.title }}"?</p>
+            <form method="post" action="{{ url_for('delete_post', article_id=article.id) }}">
+                <button type="submit">Delete</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
